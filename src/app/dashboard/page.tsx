@@ -45,8 +45,8 @@ export default function DashboardPage() {
       } else {
         throw new Error(response.message || 'Failed to load dashboard');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to load dashboard');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load dashboard');
     } finally {
       setLoading(false);
     }
@@ -131,7 +131,7 @@ export default function DashboardPage() {
         {/* Metrics Grid */}
         {dashboardData?.dashboard?.metrics && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {Object.entries(dashboardData.dashboard.metrics as Record<string, string>).map(([key, value]) => (
+            {Object.entries(dashboardData.dashboard.metrics as Record<string, any>).map(([key, value]) => (
               <Card key={key}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-600">
@@ -140,7 +140,7 @@ export default function DashboardPage() {
                   <TrendingUp className="h-4 w-4 text-gray-400" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{value as string}</div>
+                  <div className="text-2xl font-bold">{String(value)}</div>
                 </CardContent>
               </Card>
             ))}
@@ -160,7 +160,7 @@ export default function DashboardPage() {
             <CardContent>
               <div className="space-y-4">
                 {dashboardData?.dashboard?.recentBookings?.length > 0 ? (
-                  dashboardData.dashboard.recentBookings.map((item: unknown, index: number) => (
+                  dashboardData.dashboard.recentBookings.map((item: any, index: number) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
                         <p className="font-medium">{item.title || `Item ${index + 1}`}</p>

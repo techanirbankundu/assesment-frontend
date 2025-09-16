@@ -33,8 +33,9 @@ export default function LoginComponent() {
     try {
       await login(formData);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+    } catch (err: unknown) {
+      const error = err as Error;
+      setError(error.message || 'Login failed');
     }
   };
 

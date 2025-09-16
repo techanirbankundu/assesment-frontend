@@ -50,8 +50,8 @@ export default function PaymentsPage() {
       } else {
         setMessage(resp.message || 'Failed to create payment');
       }
-    } catch (e: any) {
-      setMessage(e.message || 'Failed to create payment');
+    } catch (e: unknown) {
+      setMessage(e instanceof Error ? e.message : 'Failed to create payment');
     }
   };
 

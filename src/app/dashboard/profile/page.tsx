@@ -53,8 +53,8 @@ export default function ProfilePage() {
       if (!resp.success) throw new Error(resp.message || 'Failed to update');
       await reloadUser();
       router.push(`/dashboard/${selectedIndustry === 'other' ? 'others' : selectedIndustry}`);
-    } catch (e: any) {
-      setError(e.message || 'Failed to update');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to update');
     } finally {
       setSaving(false);
     }
@@ -81,8 +81,8 @@ export default function ProfilePage() {
       } else {
         setPwdError(resp.message || 'Failed to change password');
       }
-    } catch (e: any) {
-      setPwdError(e.message || 'Failed to change password');
+    } catch (e: unknown) {
+      setPwdError(e instanceof Error ? e.message : 'Failed to change password');
     }
   };
 

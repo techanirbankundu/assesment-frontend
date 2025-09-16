@@ -94,8 +94,9 @@ export default function SignupComponent() {
       const { confirmPassword, ...registerData } = formData;
       await register(registerData);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Registration failed');
+    } catch (err: unknown) {
+      const error = err as Error;
+      setError(error.message || 'Registration failed');
     }
   };
 
