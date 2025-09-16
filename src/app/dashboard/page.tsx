@@ -131,7 +131,7 @@ export default function DashboardPage() {
         {/* Metrics Grid */}
         {dashboardData?.dashboard?.metrics && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {Object.entries(dashboardData.dashboard.metrics as Record<string, any>).map(([key, value]) => (
+            {Object.entries(dashboardData.dashboard.metrics).map(([key, value]) => (
               <Card key={key}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-600">
@@ -159,8 +159,8 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {dashboardData?.dashboard?.recentBookings?.length > 0 ? (
-                  dashboardData.dashboard.recentBookings.map((item: any, index: number) => (
+                {(dashboardData?.dashboard?.recentBookings?.length ?? 0) > 0 ? (
+                  dashboardData?.dashboard.recentBookings?.map((item, index: number) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
                         <p className="font-medium">{item.title || `Item ${index + 1}`}</p>
@@ -199,12 +199,12 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {dashboardData?.dashboard?.upcomingTours?.length > 0 || 
-                 dashboardData?.dashboard?.upcomingTravels?.length > 0 || 
-                 dashboardData?.dashboard?.activeShipments?.length > 0 ? (
-                  (dashboardData.dashboard.upcomingTours || 
-                   dashboardData.dashboard.upcomingTravels || 
-                   dashboardData.dashboard.activeShipments || []).map((item: any, index: number) => (
+                {(dashboardData?.dashboard?.upcomingTours?.length ?? 0) > 0 || 
+                 (dashboardData?.dashboard?.upcomingTravels?.length ?? 0) > 0 || 
+                 (dashboardData?.dashboard?.activeShipments?.length ?? 0) > 0 ? (
+                  (dashboardData?.dashboard.upcomingTours || 
+                   dashboardData?.dashboard.upcomingTravels || 
+                   dashboardData?.dashboard.activeShipments || []).map((item, index: number) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
                         <p className="font-medium">{item.title || `Item ${index + 1}`}</p>

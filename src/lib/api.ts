@@ -38,7 +38,13 @@ export interface RegisterData {
 }
 
 export interface DashboardData {
-  dashboard: unknown;
+  dashboard: {
+    metrics?: Record<string, string | number>;
+    recentBookings?: Array<{ title?: string; date?: string; status?: string }>;
+    upcomingTours?: Array<{ title?: string; date?: string; status?: string }>;
+    upcomingTravels?: Array<{ title?: string; date?: string; status?: string }>;
+    activeShipments?: Array<{ title?: string; date?: string; status?: string }>;
+  };
   navigation: unknown[];
   dashboardRoute: string;
   industryType: string;
