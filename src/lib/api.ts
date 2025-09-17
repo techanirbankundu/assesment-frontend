@@ -1,4 +1,23 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+
+const getApiBaseUrl = (): string => {
+  // Client-side: prefer proxy on Vercel domains if no explicit API URL
+  if (typeof window !== 'undefined') {
+    if (process.env.NEXT_PUBLIC_USE_API_PROXY === 'true') return '/api';
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    // Heuristic: on vercel.app frontend, default to proxy
+    if (window.location.hostname.endsWith('vercel.app')) return '/api';
+  }
+  // Server-side or local fallback
+  return process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+function joinUrl(base: string, path: string): string {
+  if (base.endsWith('/') && path.startsWith('/')) return base.slice(0, -1) + path;
+  if (!base.endsWith('/') && !path.startsWith('/')) return base + '/' + path;
+  return base + path;
+}
 
 export interface ApiResponse<T = unknown> {
   success: boolean;
@@ -67,7 +86,7 @@ class ApiService {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
-    const url = `${this.baseURL}${endpoint}`;
+    const url = joinUrl(this.baseURL, endpoint);
     
     const defaultHeaders = {
       'Content-Type': 'application/json',
@@ -101,6 +120,10 @@ class ApiService {
   async login(credentials: LoginCredentials): Promise<ApiResponse<{ user: User; accessToken: string; refreshToken: string }>> {
     return this.request('/auth/login', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
       body: JSON.stringify(credentials),
     });
   }
