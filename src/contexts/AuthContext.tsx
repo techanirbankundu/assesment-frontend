@@ -42,12 +42,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             } else {
                 setUser(null);
                 setIndustryType(null);
-                console.log('Auth error:', resp.message);
             }
         } catch (err) {
             // 401 "Not authenticated" is expected for unauthenticated users, don't log it as error
-            if (err instanceof Error && !err.message.includes('Not authenticated 1')) {
-                 console.error('Auth error:', err);
+            if (err instanceof Error && !err.message.includes('Not authenticated')) {
+                console.error('Auth error:', err);
             }
             setUser(null);
             setIndustryType(null);
