@@ -121,6 +121,9 @@ This frontend is designed to work with the Ragilly backend API. Ensure the backe
 4. Run tests and linting
 5. Submit a pull request
 
-## License
 
-This project is part of the Ragilly platform.
+
+## Live URLs
+
+- Frontend: https://ragillyfrontend.vercel.app/
+- Backend: https://ragillybaceknd.vercel.app
