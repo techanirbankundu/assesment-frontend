@@ -28,9 +28,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [error, setError] = useState<string | null>(null);
     const [initialized, setInitialized] = useState<boolean>(false);
 
-    // Hydrate session from cookie via /auth/me
+    // Check if user might be authenticated before calling API
+    const hasAuthCookie = () => {
+        if (typeof document === 'undefined') return false;
+        return document.cookie.split(';').some(cookie => 
+            cookie.trim().startsWith('access_token=')
+        );
+    };
+
+    // Hydrate session from cookie via /auth/me (only if cookie exists)
     useEffect(() => {
-        reloadUser().finally(() => setInitialized(true));
+        if (hasAuthCookie()) {
+            reloadUser().finally(() => setInitialized(true));
+        } else {
+            // No cookie, user is definitely not authenticated
+            setUser(null);
+            setIndustryType(null);
+            setInitialized(true);
+        }
     }, []);
 
     const reloadUser = async () => {
