@@ -6,6 +6,7 @@ export default function BookingsPage() {
     <div className="p-6">
       <h1 className="text-xl font-semibold">Bookings</h1>
       <p className="text-sm text-gray-600">View and manage bookings.</p>
+      <button>Comming Soon!</button>
     </div>
   );
 }
